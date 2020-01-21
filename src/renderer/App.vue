@@ -2,7 +2,22 @@
   <div id="app">
     <div class="top">
       <i class="el-icon-refresh icon" @click="update"></i>
+      <i class="el-icon-setting icon" @click="showSetting=true"></i>
     </div>
+    <el-drawer
+      size="90%"
+      title="设置"
+      :before-close="closeSetting"
+      :visible.sync="showSetting"
+      :direction="'btt'"
+      :with-header="false">
+      <div>设置</div>
+      <div>
+        请输入Token：
+        <el-input v-model="token" placeholder="demo"></el-input>
+        <el-button size="mini">确认</el-button>
+      </div>
+    </el-drawer>
     <div class="center">
       <el-row>{{city}}</el-row>
       <el-row class="aqi">{{aqi}}</el-row>
@@ -13,14 +28,17 @@
 </template>
 
 <script>
+  import qs from 'qs'
   export default {
     name: 'weather-widget',
     data () {
       return {
+        token: 'demo',
         updateTime: '',
         info: '',
         city: 'City',
-        aqi: 0
+        aqi: 0,
+        showSetting: false
       }
     },
     computed: {
@@ -45,7 +63,11 @@
         this.updateTime = new Date()
         var that = this
         console.log('update')
-        let url = 'http://api.waqi.info/feed/shenzhen/?token=demo'
+        let param = {
+          token: this.token
+        }
+        let city = 'shenzhen/?'
+        let url = 'http://api.waqi.info/feed/' + city + qs.stringify(param)
         this.$http.get(url)
           .then(function (response) {
             console.log(response.data.data)
@@ -59,6 +81,10 @@
           .catch(function (error) {
             console.log(error)
           })
+      },
+      closeSetting (done) {
+        this.update()
+        done()
       }
     }
   }
