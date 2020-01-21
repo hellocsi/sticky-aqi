@@ -41,6 +41,9 @@
         showSetting: false
       }
     },
+    created () {
+      this.update()
+    },
     computed: {
       healthy () {
         if (this.aqi <= 50) {
