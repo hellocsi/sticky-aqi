@@ -37,10 +37,15 @@
     </el-drawer>
     <div class="center content" ref="content">
       <el-row class="city-text big-text">{{city.label}}</el-row>
-      <el-row class="aqi">{{aqi}}</el-row>
-      <el-row class="middle-text">{{aqText}}</el-row>
-      <el-row class="middle-text">更新时间：{{updateTime}}</el-row>
-      <a href="http://aqicn.org/city/beijing/" target="_blank">数据来源：aqicn.org</a>
+      <el-row class="aqi big-text">{{aqi}}</el-row>
+      <el-row class="middle-text aq-text">{{aqText}}</el-row>
+      <el-row class="small-text">更新时间：{{updateTime}}</el-row>
+      <a href="http://aqicn.org/city/beijing/"
+        target="_blank"
+        class="small-text link"
+        ref="link"
+        @mouseover="linkHover"
+        @mouseleave="linkDefault">数据来源：aqicn.org</a>
     </div>
   </div>
 </template>
@@ -99,6 +104,12 @@
     computed: {
     },
     methods: {
+      linkHover () {
+        this.$refs.link.style.color = 'blue'
+      },
+      linkDefault () {
+        this.$refs.link.style.color = this.$refs.content.style.color
+      },
       changeStyle () {
         if (this.aqi <= 50) {
           this.aqText = '优'
@@ -125,6 +136,7 @@
           this.$refs.content.style.background = '#7e0023'
           this.$refs.content.style.color = '#F2EBEB'
         }
+        this.linkDefault()
       },
       update () {
         let date = new Date()
@@ -159,6 +171,10 @@
 
 <style>
   /* CSS */
+  .link {
+    text-decoration: none;
+    color: #F2EBEB;
+  }
   .top {
     background-color: #D0CC8D;
     height: 48px;
@@ -173,6 +189,12 @@
   }
   .icon {
     font-size: 24px;
+  }
+  .icon:hover {
+    color:#2B94D7;
+  }
+  .big-text, .middle-text, .small-text {
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif
   }
   .big-text {
     font-size: 36px;
@@ -192,10 +214,10 @@
     color: #F2EBEB;
   }
   .aqi {
-    width: 100%;
-    height: 100px;
-    font-size: 48px;
-    line-height: 100px;
+    margin-top: 20px;
+  }
+  .aq-text {
+    margin-bottom: 20px;
   }
   .aqi-color {
     background-color: #2B94D7;
