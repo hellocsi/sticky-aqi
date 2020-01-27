@@ -3,22 +3,22 @@
     <div class="top">
       <i class="el-icon-refresh icon" @click="update"></i>
       <i class="el-icon-s-tools icon" @click="showSetting=true"></i>
-    <el-select class="city-select"
-      v-model="city"
-      placeholder="请选择"
-      @change="update">
-      <el-option-group
-        v-for="group in options"
-        :key="group.label"
-        :label="group.label">
-        <el-option
-          v-for="item in group.options"
-          :key="item.value"
-          :label="item.label"
-          :value="item">
-        </el-option>
-      </el-option-group>
-    </el-select>
+      <el-select class="city-select" style="float: right"
+        v-model="city"
+        placeholder="请选择"
+        @change="update">
+        <el-option-group
+          v-for="group in options"
+          :key="group.label"
+          :label="group.label">
+          <el-option
+            v-for="item in group.options"
+            :key="item.value"
+            :label="item.label"
+            :value="item">
+          </el-option>
+        </el-option-group>
+      </el-select>
     </div>
     <el-drawer
       size="85%"
@@ -34,10 +34,10 @@
         <el-button size="mini">确认</el-button>
       </div>
     </el-drawer>
-    <div class="center content">
+    <div class="center content" ref="content">
       <el-row class="city-text">{{city.label}}</el-row>
       <el-row class="aqi">{{aqi}}</el-row>
-      <el-row>{{healthy}}</el-row>
+      <el-row>{{aqText}}</el-row>
       <el-row>更新时间：{{updateTime}}</el-row>
     </div>
   </div>
@@ -51,21 +51,27 @@
       return {
         token: 'demo',
         updateTime: '',
-        info: '',
         city: {
           label: '上海市',
           value: 'Shanghai'
         },
         aqi: 0,
+        aqText: '',
         showSetting: false,
         options: [{
           label: '热门城市',
           options: [{
+            value: 'Beijing',
+            label: '北京市'
+          }, {
             value: 'Shanghai',
             label: '上海市'
           }, {
-            value: 'Beijing',
-            label: '北京市'
+            value: 'Guangzhou',
+            label: '广州市'
+          }, {
+            value: 'Shenzhen',
+            label: '深圳市'
           }]
         }, {
           label: '城市名',
@@ -73,11 +79,11 @@
             value: 'Chengdu',
             label: '成都市'
           }, {
-            value: 'Shenzhen',
-            label: '深圳市'
+            value: 'Xian',
+            label: '西安市'
           }, {
-            value: 'Guangzhou',
-            label: '广州市'
+            value: 'TianJin',
+            label: '天津市'
           }, {
             value: 'Dalian',
             label: '大连市'
@@ -89,23 +95,35 @@
       this.update()
     },
     computed: {
-      healthy () {
-        if (this.aqi <= 50) {
-          return 'Good'
-        } else if (this.aqi <= 100) {
-          return 'Moderate'
-        } else if (this.aqi <= 150) {
-          return 'Unhealthy for Sensitive Groups'
-        } else if (this.aqi <= 200) {
-          return 'Unhealthy'
-        } else if (this.aqi <= 300) {
-          return 'Very Unhealthy'
-        } else {
-          return 'Hazardous'
-        }
-      }
     },
     methods: {
+      changeStyle () {
+        if (this.aqi <= 50) {
+          this.aqText = '优'
+          this.$refs.content.style.background = '#009966'
+          this.$refs.content.style.color = '#F2EBEB'
+        } else if (this.aqi <= 100) {
+          this.aqText = '良'
+          this.$refs.content.style.background = 'yellow'
+          this.$refs.content.style.color = 'black'
+        } else if (this.aqi <= 150) {
+          this.aqText = '轻度污染'
+          this.$refs.content.style.background = 'orange'
+          this.$refs.content.style.color = 'black'
+        } else if (this.aqi <= 200) {
+          this.aqText = '中度污染'
+          this.$refs.content.style.background = 'red'
+          this.$refs.content.style.color = '#F2EBEB'
+        } else if (this.aqi <= 300) {
+          this.aqText = '重度污染'
+          this.$refs.content.style.background = 'purple'
+          this.$refs.content.style.color = '#F2EBEB'
+        } else {
+          this.aqText = '严重污染'
+          this.$refs.content.style.background = '#7e0023'
+          this.$refs.content.style.color = '#F2EBEB'
+        }
+      },
       update () {
         let date = new Date()
         let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
@@ -121,8 +139,8 @@
           .then(function (response) {
             console.log(response.data.data)
             let info = response.data.data
-            that.info = info
             that.aqi = info.aqi
+            that.changeStyle()
             console.log(that.info.city.name)
           })
           .catch(function (error) {
@@ -168,6 +186,9 @@
     height: 100px;
     font-size: 48px;
     line-height: 100px;
+  }
+  .aqi-color {
+    background-color: #2B94D7;
   }
   .center {
     text-align: center
