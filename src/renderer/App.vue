@@ -37,7 +37,12 @@
     </el-drawer>
     <div class="center content" ref="content">
       <el-row class="city-text big-text">{{city.label}}</el-row>
-      <el-row class="aqi big-text">{{aqi}}</el-row>
+      <el-popover
+        placement="bottom"
+        trigger="hover">
+        <el-row class="small-text center">空气质量指数<br>Air Quality Index (AQI)</el-row>
+        <el-row slot="reference" class="aqi big-text">{{aqi}}</el-row>
+      </el-popover>
       <el-row class="middle-text aq-text">{{aqText}}</el-row>
       <el-row class="small-text">更新时间：{{updateTime}}</el-row>
       <a href="http://aqicn.org/city/beijing/"
@@ -217,6 +222,8 @@
     color: #F2EBEB;
   }
   .aqi {
+    width: 70px;
+    margin: auto;
     margin-top: 20px;
   }
   .aq-text {
@@ -226,6 +233,6 @@
     background-color: #2B94D7;
   }
   .center {
-    text-align: center
+    text-align: center;
   }
 </style>
