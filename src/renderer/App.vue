@@ -100,6 +100,9 @@
     },
     created () {
       this.update()
+      this.$nextTick(() => {
+        setInterval(this.update, 1000 * 3600)
+      })
     },
     computed: {
     },
