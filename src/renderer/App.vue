@@ -36,10 +36,11 @@
       </div>
     </el-drawer>
     <div class="center content" ref="content">
-      <el-row class="city-text">{{city.label}}</el-row>
+      <el-row class="city-text big-text">{{city.label}}</el-row>
       <el-row class="aqi">{{aqi}}</el-row>
-      <el-row>{{aqText}}</el-row>
-      <el-row>更新时间：{{updateTime}}</el-row>
+      <el-row class="middle-text">{{aqText}}</el-row>
+      <el-row class="middle-text">更新时间：{{updateTime}}</el-row>
+      <a href="http://aqicn.org/city/beijing/" target="_blank">数据来源：aqicn.org</a>
     </div>
   </div>
 </template>
@@ -173,8 +174,16 @@
   .icon {
     font-size: 24px;
   }
-  .city-text {
+  .big-text {
     font-size: 36px;
+  }
+  .middle-text {
+    font-size: 20px;
+  }
+  .small-text {
+    font-size: 15px;
+  }
+  .city-text {
     padding-top: 20px;
   }
   .content {
