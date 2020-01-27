@@ -4,6 +4,7 @@
       <i class="el-icon-refresh icon" @click="update"></i>
       <i class="el-icon-s-tools icon" @click="showSetting=true"></i>
       <el-select class="city-select" style="float: right"
+        filterable
         v-model="city"
         placeholder="请选择"
         @change="update">
