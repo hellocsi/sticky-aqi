@@ -2,7 +2,17 @@
   <div id="app">
     <div class="top">
       <i class="el-icon-refresh icon" @click="update"></i>
-      <i class="el-icon-s-tools icon" @click="showSetting=true"></i>
+      <el-popover
+        placement="top"
+        width="300"
+        v-model="showSetting">
+          <p>请输入Token：</p>
+          <el-input v-model="token" placeholder="demo"></el-input>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="closeSetting">确定</el-button>
+        </div>
+        <i class="el-icon-s-tools icon" slot="reference"></i>
+      </el-popover>
       <el-select class="city-select" style="float: right"
         filterable
         v-model="city"
@@ -21,20 +31,6 @@
         </el-option-group>
       </el-select>
     </div>
-    <el-drawer
-      size="85%"
-      title="设置"
-      :before-close="closeSetting"
-      :visible.sync="showSetting"
-      :direction="'btt'"
-      :with-header="false">
-      <div>设置</div>
-      <div>
-        请输入Token：
-        <el-input v-model="token" placeholder="demo"></el-input>
-        <el-button size="mini">确认</el-button>
-      </div>
-    </el-drawer>
     <div class="center content" ref="content">
       <el-row class="city-text big-text">{{city.label}}</el-row>
       <el-popover
@@ -171,7 +167,7 @@
       },
       closeSetting (done) {
         this.update()
-        done()
+        this.showSetting = false
       }
     }
   }
