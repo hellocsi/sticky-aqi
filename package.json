@@ -1,8 +1,8 @@
 {
-  "name": "weather-widget",
-  "version": "0.0.1",
+  "name": "sticky-aqi",
+  "version": "0.1.0",
   "author": "Chang Si <si_chang@hotmail.com>",
-  "description": "An electron-vue project",
+  "description": "An AQI widget like Sticky Notes！",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "weather-widget",
+    "productName": "StickyAQI",
     "appId": "com.example.hellocsi",
     "directories": {
       "output": "build"
