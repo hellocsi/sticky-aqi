@@ -4,13 +4,19 @@
       <i class="el-icon-refresh icon" @click="update"></i>
       <el-popover
         placement="top"
-        width="300"
+        width="290"
         v-model="showSetting">
-          <p>请输入Token：</p>
-          <el-input v-model="token" placeholder="demo"></el-input>
+        <p>请输入Token：</p>
+        <el-input v-model="token" placeholder="demo"></el-input>
         <div style="text-align: right; margin: 0">
           <el-button type="primary" size="mini" @click="closeSetting">确定</el-button>
         </div>
+        <el-switch
+          v-model="setAutoLaunch"
+          active-color="#13ce66"
+          inactive-color="#ff4949">
+        </el-switch>
+        <span class="option-text">开机启动</span>
         <i class="el-icon-s-tools icon" slot="reference"></i>
       </el-popover>
       <el-select class="city-select" style="float: right"
@@ -53,10 +59,12 @@
 
 <script>
   import qs from 'qs'
+  import { remote } from 'electron'
   export default {
     name: 'weather-widget',
     data () {
       return {
+        setAutoLaunch: true,
         token: 'demo',
         updateTime: '',
         city: {
@@ -104,6 +112,14 @@
       this.$nextTick(() => {
         setInterval(this.update, 1000 * 3600)
       })
+      this.setAutoLaunch = remote.app.getLoginItemSettings().openAtLogin
+    },
+    watch: {
+      setAutoLaunch (newVal, oldVal) {
+        remote.app.setLoginItemSettings({
+          openAtLogin: newVal
+        })
+      }
     },
     computed: {
     },
@@ -211,6 +227,9 @@
   }
   .city-text {
     padding-top: 20px;
+  }
+  .option-text {
+    margin-left: 10px;
   }
   .content {
     background-color: #2B94D7;

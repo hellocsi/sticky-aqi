@@ -50,6 +50,10 @@ app.on('activate', () => {
   }
 })
 
+app.setLoginItemSettings({
+  openAtLogin: true
+})
+
 /**
  * Auto Updater
  *
