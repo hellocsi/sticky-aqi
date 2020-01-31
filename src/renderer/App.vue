@@ -9,6 +9,7 @@
         <p>请输入Token：</p>
         <el-input v-model="token" placeholder="demo"></el-input>
         <div style="text-align: right; margin: 0">
+          <a href="http://aqicn.org/data-platform/token/#/" target="_blank">还没有Token？</a>
           <el-button type="primary" size="mini" @click="closeSetting">确定</el-button>
         </div>
         <el-switch
@@ -53,6 +54,7 @@
         ref="link"
         @mouseover="linkHover"
         @mouseleave="linkDefault">数据来源：aqicn.org</a>
+      <el-row class="notice" v-show="token === 'demo'"> 这是测试界面，请输入正确的Token </el-row>
     </div>
   </div>
 </template>
@@ -113,6 +115,11 @@
         setInterval(this.update, 1000 * 3600)
       })
       this.setAutoLaunch = remote.app.getLoginItemSettings().openAtLogin
+    },
+    mounted () {
+      if (this.token === 'demo') {
+        this.showSetting = true
+      }
     },
     watch: {
       setAutoLaunch (newVal, oldVal) {
@@ -191,6 +198,13 @@
 
 <style>
   /* CSS */
+  .notice {
+    font-size: 12px;
+    color: white;
+    margin-top: 5px;
+    padding: 2px;
+    background-color: gray;
+  }
   .link {
     text-decoration: none;
     color: #F2EBEB;
