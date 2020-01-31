@@ -4,6 +4,14 @@
 
 #### Build Setup
 
+First, apply for your token from [aqiorg.cn](http://aqicn.org/data-platform/token/#/), and put your token in [static/token.json](./static/token.json).
+``` json
+{
+    "aqiToken": "put your token here"
+}
+```
+Now, begin to build your own software.
+
 ``` bash
 # install dependencies
 yarn install

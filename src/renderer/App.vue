@@ -3,15 +3,10 @@
     <div class="top">
       <i class="el-icon-refresh icon" @click="update"></i>
       <el-popover
+        title="设置"
         placement="top"
         width="290"
         v-model="showSetting">
-        <p>请输入Token：</p>
-        <el-input v-model="token" placeholder="demo"></el-input>
-        <div style="text-align: right; margin: 0">
-          <a href="http://aqicn.org/data-platform/token/#/" target="_blank">还没有Token？</a>
-          <el-button type="primary" size="mini" @click="closeSetting">确定</el-button>
-        </div>
         <el-switch
           v-model="setAutoLaunch"
           active-color="#13ce66"
@@ -63,6 +58,7 @@
 </template>
 
 <script>
+  import token from '../../static/token.json'
   import qs from 'qs'
   import { remote } from 'electron'
   export default {
@@ -114,16 +110,12 @@
       }
     },
     created () {
+      this.token = token.aqiToken
       this.update()
       this.$nextTick(() => {
         setInterval(this.update, 1000 * 3600)
       })
       this.setAutoLaunch = remote.app.getLoginItemSettings().openAtLogin
-    },
-    mounted () {
-      if (this.token === 'demo') {
-        this.showSetting = true
-      }
     },
     watch: {
       setAutoLaunch (newVal, oldVal) {
@@ -180,9 +172,13 @@
         let url = 'http://api.waqi.info/feed/' + city + qs.stringify(param)
         this.$http.get(url)
           .then(function (response) {
-            console.log(response.data.data)
+            console.log('***', response)
             let info = response.data.data
-            that.aqi = info.aqi
+            if (info === 'Invalid key') {
+              that.token = 'demo'
+            } else {
+              that.aqi = info.aqi
+            }
             that.changeStyle()
             let date = new Date()
             let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
