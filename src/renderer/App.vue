@@ -38,7 +38,10 @@
         </el-option-group>
       </el-select>
     </div>
-    <div class="center content" ref="content">
+    <div class="center content" ref="content"
+      v-loading="showRefresh"
+      element-loading-text="加载中"
+      element-loading-background="rgba(0, 0, 0, 0.8)">
       <el-row class="city-text big-text">{{city.label}}</el-row>
       <el-popover
         placement="bottom"
@@ -66,6 +69,7 @@
     name: 'weather-widget',
     data () {
       return {
+        showRefresh: false,
         setAutoLaunch: true,
         token: 'demo',
         updateTime: '',
@@ -166,9 +170,7 @@
         this.linkDefault()
       },
       update () {
-        let date = new Date()
-        let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
-        this.updateTime = `${date.getHours()}:${minutes}`
+        this.showRefresh = true
         var that = this
         console.log('update')
         let param = {
@@ -182,7 +184,10 @@
             let info = response.data.data
             that.aqi = info.aqi
             that.changeStyle()
-            console.log(that.info.city.name)
+            let date = new Date()
+            let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
+            that.updateTime = `${date.getHours()}:${minutes}`
+            that.showRefresh = false
           })
           .catch(function (error) {
             console.log(error)
